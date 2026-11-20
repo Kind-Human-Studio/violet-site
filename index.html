@@ -149,21 +149,26 @@
   </main>
 
   <script>
-    // Ease each section's content in as it scrolls into view, one piece
-    // after another within the section.
-    const revealTargets = "h1, .hero-sub, .hero-actions, h2, .split-text p, .review-card, " +
-      ".checks-grid li, .industry, .try-panel, .team-grid article, .cta p, .cta .pill";
+    // Reveal content as it scrolls into view. Headings fade first, the text
+    // under them a beat later; cards and panels also rise into place.
+    const reveals = [
+      ["reveal-text", "main h2", "65ms"],
+      ["reveal-text", ".split-text p, .checks-grid li, .cta p, .cta .pill", "105ms"],
+      ["reveal-text", ".hero h1", "130ms"],
+      ["reveal-text", ".hero-sub, .hero-actions", "210ms"],
+      ["reveal-card", ".review-card, .industry, .try-panel, .team-grid article", "65ms"],
+    ];
     const revealer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add("is-visible");
         revealer.unobserve(entry.target);
       });
-    }, { rootMargin: "0px 0px -8% 0px" });
-    document.querySelectorAll("main section").forEach((section) => {
-      section.querySelectorAll(revealTargets).forEach((el, i) => {
-        el.classList.add("reveal");
-        el.style.setProperty("--reveal-delay", `${Math.min(i * 0.09, 0.6)}s`);
+    }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    reveals.forEach(([kind, selector, delay]) => {
+      document.querySelectorAll(selector).forEach((el) => {
+        el.classList.add(kind);
+        el.style.setProperty("--reveal-delay", delay);
         revealer.observe(el);
       });
     });
