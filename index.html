@@ -7,8 +7,19 @@
   <meta name="description" content="Violet keeps track of your ad specs, standards, and requirements wherever you create.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600;700;800&family=Inconsolata:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500..800&family=Inconsolata:wght@400..800&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/img/hero-top.jpg" as="image" fetchpriority="high">
   <link rel="stylesheet" href="assets/styles.css">
+  <script>
+    // Hold the page hidden until the fonts are in, so text doesn't redraw and
+    // jump as they swap. Capped so a slow font server never hides the page long.
+    document.documentElement.classList.add("is-loading");
+    const reveal = () => document.documentElement.classList.remove("is-loading");
+    Promise.all([
+      '500 1em "EB Garamond"', '600 1em "EB Garamond"', '400 1em Inconsolata', '700 1em Inconsolata'
+    ].map((font) => document.fonts.load(font))).then(reveal, reveal);
+    setTimeout(reveal, 1200);
+  </script>
 </head>
 <body>
   <header class="site-header">
@@ -138,6 +149,12 @@
   </main>
 
   <script>
+    // Fade each photo in once it has loaded instead of letting it pop in.
+    document.querySelectorAll(".team-grid img").forEach((img) => {
+      if (img.complete) return img.classList.add("is-loaded");
+      img.addEventListener("load", () => img.classList.add("is-loaded"));
+    });
+
     // A file dropped here can't be carried over to the app, so stop the
     // browser from opening it and send the visitor to the app's uploader.
     const zone = document.querySelector("[data-app-drop]");
