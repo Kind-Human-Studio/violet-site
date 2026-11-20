@@ -234,7 +234,7 @@ h2 {
 /* Try it */
 .try {
   padding: 162px 0 194px;
-  background: #2d2c18 url("img/hero-bottom.jpg") center / cover no-repeat;
+  background: #686e52 url("img/try-bg.jpg") center / cover no-repeat;
 }
 .try .split-text { align-self: center; color: var(--paper); }
 .try .split-text h2 { font-weight: 500; }
